@@ -5,10 +5,19 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import GlobalState from './contexts/GlobalState';
 import Liked from './components/Submissions/Liked';
 import { onMessage, fetchLikedFormSubmissions, saveLikedFormSubmission } from './service/mockServer';
+
+const theme = createTheme({
+  palette: {
+    notif: {
+      main: '#7aeef4',
+    },
+  },
+});
 
 export default function Content() {
   // Global context for storing liked submissions
@@ -27,6 +36,8 @@ export default function Content() {
   const [snackPack, setSnackPack] = React.useState([]);
 	const [open, setOpen] = React.useState(false);
 	const [messageInfo, setMessageInfo] = React.useState(undefined);
+	const vertical = 'bottom';
+	const horizontal = 'right';
 
 	/*
 	* Handles updates to the MUI Snackbar models
@@ -172,6 +183,7 @@ export default function Content() {
       	</Typography>
       }
 			<Snackbar
+			  anchorOrigin={{ vertical, horizontal }}
 				key={messageInfo ? messageInfo.key : undefined}
 				open={open}
 				autoHideDuration={6000}
@@ -180,9 +192,11 @@ export default function Content() {
 				message={messageInfo ? messageInfo.message : undefined}
 				action={
 					<React.Fragment>
-						<Button color="secondary" size="small" onClick={handleLike}>
-							LIKE
-						</Button>
+					  <ThemeProvider theme={theme}>
+              <Button color="notif" size="small" onClick={handleLike}>
+                LIKE
+              </Button>
+						</ThemeProvider>
 						<IconButton
 							aria-label="close"
 							color="inherit"
