@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  frontend:
+    image: nginx
+    build:
+      context: frontend
+      dockerfile: ./frontend.Dockerfile
+    ports:
+      - "8080:80"
