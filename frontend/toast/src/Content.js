@@ -16,6 +16,7 @@ export default function Content() {
 
   // Flag whether we have any liked submissions
   const [hasLikedSubmissions, setHasLikedSubmissions] = useState(false);
+  const [likedStatus, setLikedStatus] = useState('Loading liked submissions...')
 
 	// Submission queues
 	const [submissions, setSubmissions] = React.useState({});
@@ -118,7 +119,7 @@ export default function Content() {
 	* Attempts to save like submissions to the server
 	*/
   useEffect(async () => {
-    if (queuedLikes.length > 0) {
+    while (queuedLikes.length > 0) {
       let queue = queuedLikes;
       let like = queue.pop();
       setQueuedLikes(queue);
@@ -130,7 +131,6 @@ export default function Content() {
 
         // Add the like back onto the queue
         setQueuedLikes(queuedLikes.concat([like]));
-        setQueuedLikes(queuedLikes);
       });
 
     }
@@ -141,9 +141,13 @@ export default function Content() {
 	*/
 	useEffect(async () => {
     fetchLikedFormSubmissions().then((response) => {
+      if (response.formSubmissions === undefined || response.formSubmissions.length == 0) {
+        setLikedStatus('No liked submissions.');
+      }
       setGlobalState(state => ({...state, likedSubmissions: response.formSubmissions}));
     }).catch((error) => {
-      console.log(error)
+      console.log(error);
+      setLikedStatus('There seems to be a problem with the server. Try refreshing the page.');
     });
 	}, [liked]);
 
@@ -162,7 +166,9 @@ export default function Content() {
       	<Liked submissions={globalState.likedSubmissions}/>
       	:
       	<Typography role="no-likes-header" variant="body1" sx={{fontStyle: 'italic'}}>
-      		No liked submissions.
+      	{
+      	  likedStatus
+      	}
       	</Typography>
       }
 			<Snackbar

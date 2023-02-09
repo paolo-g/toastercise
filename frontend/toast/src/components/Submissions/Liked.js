@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
+import './Liked.scss';
 import Submission from '../Submission/Submission';
 
 const Liked = ({submissions}) => {

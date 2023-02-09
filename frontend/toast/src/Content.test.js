@@ -6,5 +6,5 @@ test('renders Content component', () => {
   render(<Content />);
 
   const content = screen.getByRole('no-likes-header');
-	expect(content).toHaveTextContent('No liked submissions');
+	expect(content).toHaveTextContent('Loading liked submissions');
 });
