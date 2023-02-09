@@ -11,19 +11,17 @@ const Liked = ({submissions}) => {
 	* Takes the input submissions data and creates Submission entities
 	*/
 	useEffect(() => {
-		if (!submissions)
-  		return
+    if (submissions === undefined || submissions.length == 0)
+      return
 
-    setLikedSubmissions([]);
-
-    submissions.map((item, idx) => (
-      likedSubmissions.push(
-  			<Submission submission={item} />
+    let stack = [];
+    submissions.forEach((item) => {
+      stack.push(
+        <Submission submission={item} />
       )
-    ));
-
-    setLikedSubmissions(likedSubmissions);
-	}, []);
+    });
+    setLikedSubmissions(stack);
+	}, [submissions]);
 
   return (
     <Box>

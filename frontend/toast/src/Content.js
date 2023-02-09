@@ -1,4 +1,4 @@
-import React, {useEffect, useContext, useState, useCallback} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
@@ -8,17 +8,19 @@ import Typography from '@mui/material/Typography';
 
 import GlobalState from './contexts/GlobalState';
 import Liked from './components/Submissions/Liked';
-import { onMessage, saveLikedFormSubmission } from './service/mockServer';
+import { onMessage, fetchLikedFormSubmissions, saveLikedFormSubmission } from './service/mockServer';
 
 export default function Content() {
   // Global context for storing liked submissions
   const [globalState, setGlobalState] = useContext(GlobalState);
+
   // Flag whether we have any liked submissions
   const [hasLikedSubmissions, setHasLikedSubmissions] = useState(false);
 
-	// Submission queue
+	// Submission queues
 	const [submissions, setSubmissions] = React.useState({});
 	const [queuedLikes, setQueuedLikes] = React.useState([]);
+	const [liked, setLiked] = React.useState([]);
 
   // Toast UI
   const [snackPack, setSnackPack] = React.useState([]);
@@ -69,16 +71,9 @@ export default function Content() {
 		  'id': key,
 		  'data': data
 		};
-		queuedLikes.push(like);
-		setQueuedLikes(queuedLikes);
+		setQueuedLikes(queuedLikes.concat([like]));
 		delete submissions[key];
 		setSubmissions(submissions);
-
-
-
-		console.log('queuedLikes', queuedLikes);
-		console.log('submissions', submissions);
-
 
 		// Close the toast notif
 		setOpen(false);
@@ -118,6 +113,39 @@ export default function Content() {
 	* Pass the toast handler to the mockServer
 	*/
 	onMessage(toaster);
+
+	/*
+	* Attempts to save like submissions to the server
+	*/
+  useEffect(async () => {
+    if (queuedLikes.length > 0) {
+      let queue = queuedLikes;
+      let like = queue.pop();
+      setQueuedLikes(queue);
+
+      saveLikedFormSubmission(like).then((response) => {
+        setLiked(liked.concat([like]));
+      }).catch((error) => {
+        console.log(error);
+
+        // Add the like back onto the queue
+        setQueuedLikes(queuedLikes.concat([like]));
+        setQueuedLikes(queuedLikes);
+      });
+
+    }
+	}, [queuedLikes]);
+
+	/*
+	* Attempts to fetch the liked submissions from the server
+	*/
+	useEffect(async () => {
+    fetchLikedFormSubmissions().then((response) => {
+      setGlobalState(state => ({...state, likedSubmissions: response.formSubmissions}));
+    }).catch((error) => {
+      console.log(error)
+    });
+	}, [liked]);
 
 	/*
 	* UI toggle to show the list of liked submissions if any exist
