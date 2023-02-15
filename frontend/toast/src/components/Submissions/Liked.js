@@ -33,7 +33,7 @@ const Liked = () => {
     setLiked(stack);
   }, [globalState.likedSubmissions]);
 
-	/*
+  /*
   * Attempts to fetch the liked submissions from the server when we first load this component
   */
   useEffect(() => {

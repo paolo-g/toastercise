@@ -18,7 +18,7 @@ const newButtonTheme = createTheme({
 /*
 * Renders a New Submission button
 */
-const NewButton = () => {
+const NewSubmissionButton = () => {
   return (
     <ThemeProvider theme={newButtonTheme}>
       <Button
@@ -36,4 +36,4 @@ const NewButton = () => {
   );
 }
 
-export default NewButton;
+export default NewSubmissionButton;

@@ -30,93 +30,93 @@ const NewSubmissionToast = () => {
 
   // Toast UI
   const [snackPack, setSnackPack] = useState([]);
-	const [open, setOpen] = useState(false);
-	const [messageInfo, setMessageInfo] = useState(undefined);
-	const vertical = 'bottom';
-	const horizontal = 'right';
+  const [open, setOpen] = useState(false);
+  const [messageInfo, setMessageInfo] = useState(undefined);
+  const vertical = 'bottom';
+  const horizontal = 'right';
 
-	/*
-	* Handles updates to the MUI Snackbar models
-	*/
-	useEffect(() => {
-		if (snackPack.length && !messageInfo) {
-			// Set a new snack when we don't have an active one
-			setMessageInfo({ ...snackPack[0] });
-			setSnackPack((prev) => prev.slice(1));
-			setOpen(true);
-		} else if (snackPack.length && messageInfo && open) {
-			// Close an active snack when a new one is added
-			setOpen(false);
-		}
-	}, [snackPack, messageInfo, open]);
+  /*
+  * Handles updates to the MUI Snackbar models
+  */
+  useEffect(() => {
+    if (snackPack.length && !messageInfo) {
+      // Set a new snack when we don't have an active one
+      setMessageInfo({ ...snackPack[0] });
+      setSnackPack((prev) => prev.slice(1));
+      setOpen(true);
+    } else if (snackPack.length && messageInfo && open) {
+      // Close an active snack when a new one is added
+      setOpen(false);
+    }
+  }, [snackPack, messageInfo, open]);
 
-	/*
-	* Handles closing of the toast
-	*/
-	const handleClose = (event, reason) => {
-		if (reason === 'clickaway') {
-			return
-		}
+  /*
+  * Handles closing of the toast
+  */
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
 
-		// Clear the toast buffer
-		setToastBuffer({});
+    // Clear the toast buffer
+    setToastBuffer({});
 
-		setOpen(false);
-	};
+    setOpen(false);
+  };
 
-	/*
-	* Handles like click events in the toast
-	*/
-	const handleLike = (event, reason) => {
-		let key = messageInfo.key;
+  /*
+  * Handles like click events in the toast
+  */
+  const handleLike = (event, reason) => {
+    let key = messageInfo.key;
 
-		// Move the liked submission to the likeBuffer
-		let data = toastBuffer[key];
-		data['liked'] = true;
-		let like = {
-		  'id': key,
-		  'data': data
-		};
-		setLikeBuffer([...likeBuffer, like]);
+    // Move the liked submission to the likeBuffer
+    let data = toastBuffer[key];
+    data['liked'] = true;
+    let like = {
+      'id': key,
+      'data': data
+    };
+    setLikeBuffer([...likeBuffer, like]);
 
-		// Close the toast
-		setOpen(false);
-	};
+    // Close the toast
+    setOpen(false);
+  };
 
-	/*
-	* Handles exit of the toast
-	*/
-	const handleExited = () => {
-		setMessageInfo(undefined);
-	};
+  /*
+  * Handles exit of the toast
+  */
+  const handleExited = () => {
+    setMessageInfo(undefined);
+  };
 
-	/*
-	* Create the toast
-	*/
-	const createToast = (submission) => {
-		let key = submission.id;
-		let data = submission.data;
-		setToastBuffer(state => ({...state, [key]: data}));
+  /*
+  * Create the toast
+  */
+  const createToast = (submission) => {
+    let key = submission.id;
+    let data = submission.data;
+    setToastBuffer(state => ({...state, [key]: data}));
 
-		let message = `${data.firstName} ${data.lastName}\n${data.email}`;
-		setSnackPack((prev) => [...prev, { message, key: key }]);
-	}
+    let message = `${data.firstName} ${data.lastName}\n${data.email}`;
+    setSnackPack((prev) => [...prev, { message, key: key }]);
+  }
 
-	/*
-	* Handle new toasts
-	*/
-	const toaster = (data) => {
-		createToast(data);
-	}
+  /*
+  * Handle new toasts
+  */
+  const toaster = (data) => {
+    createToast(data);
+  }
 
-	/*
-	* Pass the toast handler to the mockServer
-	*/
-	onMessage(toaster);
+  /*
+  * Pass the toast handler to the mockServer
+  */
+  onMessage(toaster);
 
-	/*
-	* Attempts to save like submissions to the server
-	*/
+  /*
+  * Attempts to save like submissions to the server
+  */
   useEffect(() => {
     (async () => {
       if (likeBuffer.length) {
@@ -138,7 +138,7 @@ const NewSubmissionToast = () => {
         });
       }
     })();
-	}, [likeBuffer, globalState.likedSubmissions, setGlobalState]);
+  }, [likeBuffer, globalState.likedSubmissions, setGlobalState]);
 
   return (
     <ThemeProvider theme={newSubmissionTheme}>

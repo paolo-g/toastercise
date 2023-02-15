@@ -11,9 +11,9 @@ test('renders submission element', () => {
     'lastName': lastName,
     'email': email
   }
-	let submission = {
-		'data': data
-	}
+  let submission = {
+    'data': data
+  }
   render(<Submission submission={submission} />);
 
   const submissionContent = screen.getByRole('submission');

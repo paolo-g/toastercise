@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import NewButton from './components/Submission/NewButton';
+import NewSubmissionButton from './components/Submission/NewSubmissionButton';
 
 const headerTheme = createTheme({
   palette: {
@@ -45,7 +45,7 @@ export default function Header() {
             >
               Toastercise
             </Typography>
-            <NewButton />
+            <NewSubmissionButton />
           </Toolbar>
         </AppBar>
       </Box>
