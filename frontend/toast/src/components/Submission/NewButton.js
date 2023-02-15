@@ -1,5 +1,3 @@
-import React, {useEffect} from 'react';
-
 import Button from '@mui/material/Button';
 
 import { createMockFormSubmission } from '../../service/mockServer';

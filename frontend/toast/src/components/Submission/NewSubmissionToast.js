@@ -116,26 +116,28 @@ const NewSubmissionToast = () => {
 	/*
 	* Attempts to save like submissions to the server
 	*/
-  useEffect(async () => {
-    if (likeBuffer.length) {
-      // Pop an element off the likeBuffer
-      let tmpLike = likeBuffer.pop();
-      setLikeBuffer(likeBuffer.filter(item => item.id !== tmpLike.id));
+  useEffect(() => {
+    (async () => {
+      if (likeBuffer.length) {
+        // Pop an element off the likeBuffer
+        let tmpLike = likeBuffer.pop();
+        setLikeBuffer(likeBuffer.filter(item => item.id !== tmpLike.id));
 
-      // Attempt to save the like
-      saveLikedFormSubmission(tmpLike).then((response) => {
-        globalState.likedSubmissions === undefined ?
-          setGlobalState(state => ({...state, likedSubmissions: [tmpLike]}))
-        :
-          setGlobalState(state => ({...state, likedSubmissions: [...globalState.likedSubmissions, tmpLike]}))
-      }).catch((error) => {
-        console.log(error);
+        // Attempt to save the like
+        saveLikedFormSubmission(tmpLike).then((response) => {
+          globalState.likedSubmissions === undefined ?
+            setGlobalState(state => ({...state, likedSubmissions: [tmpLike]}))
+          :
+            setGlobalState(state => ({...state, likedSubmissions: [...globalState.likedSubmissions, tmpLike]}))
+        }).catch((error) => {
+          console.log(error);
 
-        // Add the like back into the buffer
-        setLikeBuffer([...likeBuffer, tmpLike]);
-      });
-    }
-	}, [likeBuffer]);
+          // Add the like back into the buffer
+          setLikeBuffer([...likeBuffer, tmpLike]);
+        });
+      }
+    })();
+	}, [likeBuffer, globalState.likedSubmissions, setGlobalState]);
 
   return (
     <Snackbar

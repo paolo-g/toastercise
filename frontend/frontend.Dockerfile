@@ -7,6 +7,8 @@ WORKDIR /toast
 COPY toast/package.json .
 RUN npm install
 COPY toast .
+RUN npm init @eslint/config
+RUN ./node_modules/.bin/eslint --max-warnings=0 src
 RUN CI=true npm run test
 RUN npm run build
 

@@ -35,24 +35,26 @@ const Liked = () => {
 	/*
   * Attempts to fetch the liked submissions from the server when we first load this component
   */
-  useEffect(async () => {
-    fetchLikedFormSubmissions().then((response) => {
-      if (response.formSubmissions === undefined || response.formSubmissions.length == 0) {
-        setLikedStatus('No liked submissions.');
-        return
-      }
+  useEffect(() => {
+    (async () => {
+      fetchLikedFormSubmissions().then((response) => {
+        if (response.formSubmissions === undefined || response.formSubmissions.length === 0) {
+          setLikedStatus('No liked submissions.');
+          return
+        }
 
-      setGlobalState(state => ({...state, likedSubmissions: response.formSubmissions}));
-      setLikedStatus('Liked Form Submissions:');
+        setGlobalState(state => ({...state, likedSubmissions: response.formSubmissions}));
+        setLikedStatus('Liked Form Submissions:');
 
-    }).catch((error) => {
-      console.log(error);
+      }).catch((error) => {
+        console.log(error);
 
-      if (globalState.likedSubmissions === undefined) {
-        setLikedStatus('There seems to be a problem with the server. Try refreshing the page.');
-      }
-    });
-  }, []);
+        if (globalState.likedSubmissions === undefined) {
+          setLikedStatus('There seems to be a problem with the server. Try refreshing the page.');
+        }
+      });
+    })();
+  }, [globalState.likedSubmissions, setGlobalState]);
 
   return (
     <Box>
