@@ -9,12 +9,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import GlobalState from '../../contexts/GlobalState';
 import { onMessage, saveLikedFormSubmission } from '../../service/mockServer';
+import './NewSubmissionToast.scss';
 
 // Styles the toast
-const theme = createTheme({
+const newSubmissionTheme = createTheme({
   palette: {
     toast: {
-      main: '#7aeef4',
+      main: '#8fefef',
     },
   },
 });
@@ -97,7 +98,7 @@ const NewSubmissionToast = () => {
 		let data = submission.data;
 		setToastBuffer(state => ({...state, [key]: data}));
 
-		let message = `${data.firstName} ${data.lastName} ${data.email}`;
+		let message = `${data.firstName} ${data.lastName}\n${data.email}`;
 		setSnackPack((prev) => [...prev, { message, key: key }]);
 	}
 
@@ -140,32 +141,32 @@ const NewSubmissionToast = () => {
 	}, [likeBuffer, globalState.likedSubmissions, setGlobalState]);
 
   return (
-    <Snackbar
-      anchorOrigin={{ vertical, horizontal }}
-      key={messageInfo ? messageInfo.key : undefined}
-      open={open}
-      autoHideDuration={6000}
-      onClose={handleClose}
-      TransitionProps={{ onExited: handleExited }}
-      message={messageInfo ? messageInfo.message : undefined}
-      action={
-        <React.Fragment>
-          <ThemeProvider theme={theme}>
+    <ThemeProvider theme={newSubmissionTheme}>
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        key={messageInfo ? messageInfo.key : undefined}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        TransitionProps={{ onExited: handleExited }}
+        message={messageInfo ? messageInfo.message : undefined}
+        action={
+          <React.Fragment>
             <Button color="toast" size="small" onClick={handleLike}>
               LIKE
             </Button>
-          </ThemeProvider>
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            sx={{ p: 0.5 }}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>
-        </React.Fragment>
-      }
-    />
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              sx={{ p: 0.5 }}
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
+    </ThemeProvider>
   );
 }
 

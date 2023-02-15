@@ -12,7 +12,7 @@ function App() {
   return (
     <GlobalState.Provider value={[globalState, setGlobalState]}>
       <Header />
-      <Container>
+      <Container maxWidth={false}>
         <Content />
       </Container>
     </GlobalState.Provider>
