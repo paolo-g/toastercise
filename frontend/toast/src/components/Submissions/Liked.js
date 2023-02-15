@@ -1,38 +1,83 @@
-import React, {useEffect} from 'react';
+import { useEffect, useContext, useState } from 'react';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import './Liked.scss';
+import GlobalState from '../../contexts/GlobalState';
+import { fetchLikedFormSubmissions } from '../../service/mockServer';
 import Submission from '../Submission/Submission';
 
-const Liked = ({submissions}) => {
-	const [likedSubmissions, setLikedSubmissions] = React.useState([]);
 
-	/*
-	* Takes the input submissions data and creates Submission entities
-	*/
-	useEffect(() => {
-    if (submissions === undefined || submissions.length == 0)
+/*
+* Renders a list of Liked Submissions using data in globalState.likedSubmissions
+*/
+const Liked = () => {
+  const [globalState, setGlobalState] = useContext(GlobalState);
+  const [likedStatus, setLikedStatus] = useState('Loading liked submissions...')
+  const [liked, setLiked] = useState([]);
+
+  /*
+  * Updates the liked array when the global context is updated
+  */
+  useEffect(() => {
+    if (globalState.likedSubmissions === undefined)
       return
 
     let stack = [];
-    submissions.forEach((item) => {
+    globalState.likedSubmissions.forEach((item) => {
       stack.push(
         <Submission submission={item} />
       )
     });
-    setLikedSubmissions(stack);
-	}, [submissions]);
+    setLiked(stack);
+  }, [globalState.likedSubmissions]);
+
+	/*
+  * Attempts to fetch the liked submissions from the server when we first load this component
+  */
+  useEffect(async () => {
+    fetchLikedFormSubmissions().then((response) => {
+      if (response.formSubmissions === undefined || response.formSubmissions.length == 0) {
+        setLikedStatus('No liked submissions.');
+        return
+      }
+
+      setGlobalState(state => ({...state, likedSubmissions: response.formSubmissions}));
+      setLikedStatus('Liked Form Submissions:');
+
+    }).catch((error) => {
+      console.log(error);
+
+      if (globalState.likedSubmissions === undefined) {
+        setLikedStatus('There seems to be a problem with the server. Try refreshing the page.');
+      }
+    });
+  }, []);
 
   return (
     <Box>
-			<Typography role="submission-header" data-testid="liked-heading" variant="h3">
-				Liked Form Submissions
-			</Typography>
-			{
-				likedSubmissions
-			}
-		</Box>
+    {
+      (globalState.likedSubmissions !== undefined && globalState.likedSubmissions.length) ?
+        <Box>
+          <Typography role="submission-header" variant="h3">
+          {
+            likedStatus
+          }
+          </Typography>
+          <Box>
+          {
+            liked
+          }
+          </Box>
+        </Box>
+      :
+        <Typography role="no-likes-header" variant="body1" sx={{fontStyle: 'italic'}}>
+        {
+          likedStatus
+        }
+        </Typography>
+    }
+    </Box>
   );
 }
 

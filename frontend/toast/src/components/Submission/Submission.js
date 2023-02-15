@@ -1,9 +1,13 @@
 import React from 'react';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import './Submission.scss';
 
+/*
+* Renders a Submission object
+*/
 const Submission = ({submission}) => {
   return (
     <Box sx={{marginTop: 1}}>
