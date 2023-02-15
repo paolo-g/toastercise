@@ -6,9 +6,9 @@ Build stacked alerts triggered off the mockServer service and "New Submission" b
 
 - I started by containerizing this app using a node v16 image because it didn't build on my local v18
 - The react app itself is located in `/frontend/toast`
-- The container build step runs the test suite
-- I used a React Context named GlobalState for storing data in the frontend, eg. "liked submissions" state
-- I used MUI Snackbar and the same MUI architecture as Content.js to save time as recommended
+- The container build step runs a linter and then a test suite
+- I used a React Context named GlobalState for sharing data across components, eg. the list of "liked submissions"
+- I used MUI for styling
 
 ## Technical Considerations
 
