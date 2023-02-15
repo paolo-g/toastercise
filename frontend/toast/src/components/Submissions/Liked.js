@@ -62,7 +62,7 @@ const Liked = () => {
     {
       (globalState.likedSubmissions !== undefined && globalState.likedSubmissions.length) ?
         <Box>
-          <Typography role="submission-header" variant="h3">
+          <Typography role="submission-header" variant="h5">
           {
             likedStatus
           }

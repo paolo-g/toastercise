@@ -28,7 +28,7 @@ const NewSubmissionButton = () => {
         onClick={() => createMockFormSubmission()}
         sx={{padding: 1}}
       >
-        <Typography color="primary">
+        <Typography color="primary" variant="button" display="block">
           New Submission
         </Typography>
       </Button>

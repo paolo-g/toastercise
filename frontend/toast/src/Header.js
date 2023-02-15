@@ -40,7 +40,7 @@ export default function Header() {
             </IconButton>
             <Typography
               color="common.white"
-              variant="h6"
+              variant="h4"
               sx={{flexGrow: 1}}
             >
               Toastercise
