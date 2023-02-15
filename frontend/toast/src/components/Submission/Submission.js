@@ -8,8 +8,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import './Submission.scss';
-
 const avatarColor = red[400];
 const submissionTheme = createTheme({
   palette: {
