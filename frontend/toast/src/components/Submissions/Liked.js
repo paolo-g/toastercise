@@ -1,6 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 
 import Box from '@mui/material/Box';
+import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 
 import GlobalState from '../../contexts/GlobalState';
@@ -13,7 +14,7 @@ import Submission from '../Submission/Submission';
 */
 const Liked = () => {
   const [globalState, setGlobalState] = useContext(GlobalState);
-  const [likedStatus, setLikedStatus] = useState('Loading liked submissions...')
+  const [likedStatus, setLikedStatus] = useState('Loading liked submissions...');
   const [liked, setLiked] = useState([]);
 
   /*
@@ -44,7 +45,7 @@ const Liked = () => {
         }
 
         setGlobalState(state => ({...state, likedSubmissions: response.formSubmissions}));
-        setLikedStatus('Liked Form Submissions:');
+        setLikedStatus('Liked Form Submissions');
 
       }).catch((error) => {
         console.log(error);
@@ -66,11 +67,11 @@ const Liked = () => {
             likedStatus
           }
           </Typography>
-          <Box>
+          <List sx={{ width: '100%', maxWidth: 360 }}>
           {
             liked
           }
-          </Box>
+          </List>
         </Box>
       :
         <Typography role="no-likes-header" variant="body1" sx={{fontStyle: 'italic'}}>
