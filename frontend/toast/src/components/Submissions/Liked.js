@@ -45,8 +45,6 @@ const Liked = () => {
         }
 
         setGlobalState(state => ({...state, likedSubmissions: response.formSubmissions}));
-        setLikedStatus('Liked Form Submissions');
-
       }).catch((error) => {
         console.log(error);
 
@@ -63,9 +61,7 @@ const Liked = () => {
       (globalState.likedSubmissions !== undefined && globalState.likedSubmissions.length) ?
         <Box>
           <Typography role="submission-header" variant="h5">
-          {
-            likedStatus
-          }
+          Liked Form Submissions
           </Typography>
           <List sx={{ width: '100%', maxWidth: 360 }}>
           {
