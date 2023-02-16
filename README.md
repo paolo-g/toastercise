@@ -15,7 +15,7 @@ Build stacked alerts triggered off the mockServer service and "New Submission" b
 ### Using a global context
 
 I decided to use a global context so that:
-- The save logic could be housed along with the toast's `LIKE` button in the `NewSubmissionButton` component
+- The save logic could be housed along with the toast's `LIKE` button in the `NewSubmissionToast` component
 - The load logic could be housed in the `Liked` component
 
 ### When to populate the list with a newly liked submission
